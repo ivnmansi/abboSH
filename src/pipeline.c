@@ -1,6 +1,5 @@
 #define _GNU_SOURCE
 #include "pipeline.h"
-#include "utils.h"
 
 char* getPrompt(){
   char* working_directory = getcwd(NULL, 0);
@@ -10,7 +9,7 @@ char* getPrompt(){
 
   gethostname(host, sizeof(host));
 
-  asprintf(&prompt, "%s@%s %s > ", user, host, working_directory);
+  asprintf(&prompt, B_MAGENTA"%s@%s %s > "RESET, user, host, working_directory);
   free(working_directory);
 
   return prompt;

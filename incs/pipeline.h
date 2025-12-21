@@ -10,6 +10,7 @@
 #include <string.h>
 #include "utils.h"
 #include "builtin.h"
+#include "colors.h"
 
 char* getPrompt();
 char** readLine();
