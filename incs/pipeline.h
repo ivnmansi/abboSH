@@ -7,10 +7,14 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <limits.h>
+#include <string.h>
 #include "utils.h"
+#include "builtin.h"
 
 char* getPrompt();
 char** readLine();
+int execBuiltIn(char** args);
+void execFork(char** args);
 void execLine(char** args);
 
 #endif

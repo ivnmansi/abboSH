@@ -37,7 +37,28 @@ char** readLine(){
   return args;
 }
 
-void execLine(char** args){
+
+int execBuiltIn(char** args){
+  if(args[0] == NULL){
+    return 0;
+  } 
+
+  if(strcmp(args[0], "cd") == 0){
+    changeDirectory(args);
+    return 1;
+  }
+
+  if(strcmp(args[0], "exit") == 0){
+    exitShell(args);
+    return 1;
+  }
+
+  // implementar el resto dsp
+
+  return 0;
+}
+
+void execFork(char** args){
   pid_t pid = fork();
 
   if(pid == 0){
@@ -58,5 +79,11 @@ void execLine(char** args){
       int signal_num = WTERMSIG(status);
       printf("[Terminated by signal %d]\n", signal_num);
     }
+  }
+}
+
+void execLine(char** args){
+  if(!execBuiltIn(args)){
+    execFork(args);
   }
 }

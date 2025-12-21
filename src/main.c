@@ -13,6 +13,7 @@ int main(){
     free(prompt);
     args = readLine();
     execLine(args);
+    free(args);
   }
   
 
