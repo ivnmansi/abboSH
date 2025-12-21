@@ -5,9 +5,12 @@
 int main(){
   
   char** args;
+  char* prompt;
 
   while(true){
-    printf("shell > ");
+    prompt = getPrompt();
+    printf("%s", prompt);
+    free(prompt);
     args = readLine();
     execLine(args);
   }

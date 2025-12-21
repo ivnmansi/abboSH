@@ -6,8 +6,10 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <limits.h>
 #include "utils.h"
 
+char* getPrompt();
 char** readLine();
 void execLine(char** args);
 

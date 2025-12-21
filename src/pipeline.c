@@ -1,5 +1,20 @@
+#define _GNU_SOURCE
 #include "pipeline.h"
 #include "utils.h"
+
+char* getPrompt(){
+  char* working_directory = getcwd(NULL, 0);
+  char host[HOST_NAME_MAX + 1];
+  char* user = getenv("USER");
+  char* prompt;
+
+  gethostname(host, sizeof(host));
+
+  asprintf(&prompt, "%s@%s %s > ", user, host, working_directory);
+  free(working_directory);
+
+  return prompt;
+}
 
 char** readLine(){
   char* buffer = NULL;
