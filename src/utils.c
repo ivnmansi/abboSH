@@ -21,10 +21,10 @@ char** splitBuffer(char* buffer){
     char** temp = realloc(splitedBuffer, (i+1)*sizeof(char*));
     splitedBuffer = temp;
 
-    splitedBuffer[i-1] = token;
+    splitedBuffer[i-1] = strdup(token);
     splitedBuffer[i] = NULL;
 
-    token = strtok(NULL, "\t\r\n\a ");
+    token = strtok(NULL, " \t\r\n\a");
   }
   return splitedBuffer;
 }
