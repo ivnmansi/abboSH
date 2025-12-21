@@ -21,3 +21,61 @@ int exitShell(char** args){
   printf("Bye bye!\n");
   exit(0);
 }
+
+void reOut(char** args){
+  int i=0;
+  while(args[i] != NULL){
+    if(strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0){
+      if(args[i+1] == NULL){
+        printf("ERROR: No file to redirect\n");
+        exit(EXIT_FAILURE);
+      }
+    
+      char* file_name = args[i+1];
+      int fd;
+
+      if(strcmp(args[i], ">") == 0){
+        fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+      }
+      else if(strcmp(args[i], ">>") == 0){
+        fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+      }
+
+      if(fd == -1){
+        printf("Error opening file");
+        exit(EXIT_FAILURE);
+      }
+
+      dup2(fd, STDOUT_FILENO);
+      close(fd);
+      args[i] = NULL;
+    }
+    i++;
+  }
+}
+
+void reIn(char** args){
+  int i=0;
+  while(args[i] != NULL){
+    if(strcmp(args[i], "<") == 0){
+      if(args[i+1] == NULL){
+        printf("ERROR: No file to read\n");
+        exit(EXIT_FAILURE);
+      }
+
+      char* file_name = args[i+1];
+
+      int fd = open(file_name, O_RDONLY);
+      if(fd == -1){
+        printf("ERROR: Could not open file");
+        exit(EXIT_FAILURE);
+      }
+
+      dup2(fd, STDIN_FILENO);
+      close(fd);
+
+      args[i] = NULL;
+    }
+    i++;
+  }
+}

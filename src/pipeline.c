@@ -61,6 +61,8 @@ void execFork(char** args){
   pid_t pid = fork();
 
   if(pid == 0){
+    reIn(args);
+    reOut(args);
     execvp(args[0], args);
 
     printf("Command not found\n");

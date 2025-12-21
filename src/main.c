@@ -1,7 +1,5 @@
 #include "pipeline.h"
  
-
-
 int main(){
   
   char** args;
@@ -15,8 +13,6 @@ int main(){
     execLine(args);
     free(args);
   }
-  
-
   return 0;
 }
 
