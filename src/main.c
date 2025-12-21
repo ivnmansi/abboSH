@@ -5,7 +5,7 @@ int main(){
   char** args;
   char* prompt;
 
-  while(true){
+  while(1){
     prompt = getPrompt();
     printf("%s", prompt);
     free(prompt);
