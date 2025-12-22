@@ -7,5 +7,6 @@
 
 void formatBuffer(char* buffer, ssize_t buffer_len);
 char** splitBuffer(char* buffer);
+void removeArg(char** args, int position);
 
 #endif

@@ -28,3 +28,13 @@ char** splitBuffer(char* buffer){
   }
   return splitedBuffer;
 }
+
+
+void removeArg(char** args, int position){
+  int i = position;
+  while(args[i+1] != NULL){
+    args[i] = args[i+1];
+    i++;
+  }
+  args[i] = NULL;
+}

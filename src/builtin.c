@@ -48,7 +48,9 @@ void reOut(char** args){
 
       dup2(fd, STDOUT_FILENO);
       close(fd);
-      args[i] = NULL;
+      
+      removeArg(args,i);
+      removeArg(args,i);
     }
     i++;
   }
@@ -106,7 +108,8 @@ void reIn(char** args){
         unlink(file_name);
       }
 
-      args[i] = NULL;
+      removeArg(args, i);
+      removeArg(args, i);
     }
     i++;
   }

@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include "utils.h"
 
 int changeDirectory(char** args);
 int exitShell(char** args);
