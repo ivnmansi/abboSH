@@ -57,6 +57,7 @@ void reOut(char** args){
 }
 
 
+
 void reIn(char** args){
   int i=0;
   while(args[i] != NULL){
@@ -113,4 +114,54 @@ void reIn(char** args){
     }
     i++;
   }
+}
+
+
+int execPipes(char** args){
+  int i = 0;
+  while(args[i] != NULL){
+    if((strcmp(args[i], "|") == 0) && args[i-1] != NULL && args[i+1] != NULL){
+      args[i] = NULL;
+      char** argsRight = &args[i+1];
+
+      int fd[2];
+      if(pipe(fd) == -1){
+        printf("ERROR: Could not create pipe");
+        return 0;
+      }
+
+      pid_t pid1 = fork();
+      if(pid1 == 0){
+        close(fd[0]);
+        dup2(fd[1], STDOUT_FILENO);
+        close(fd[1]);
+
+        execvp(args[0], args);
+        printf("ERROR: Could not exec left pipe");
+        exit(EXIT_FAILURE);
+      }
+
+      pid_t pid2 = fork();
+      if(pid2 == 0){
+        close(fd[1]);
+        dup2(fd[0], STDIN_FILENO);
+        close(fd[0]);
+
+        execvp(argsRight[0], argsRight);
+        printf("ERROR: Could not exec right pipe");
+        exit(EXIT_FAILURE);
+      }
+
+      close(fd[0]);
+      close(fd[1]);
+
+      waitpid(pid1, NULL, 0);
+      waitpid(pid2, NULL, 0);
+
+      return 1;
+    }
+    i++;
+  }
+
+  return 0;
 }

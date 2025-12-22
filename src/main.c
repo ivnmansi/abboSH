@@ -11,6 +11,9 @@ int main(){
     free(prompt);
     args = readLine();
     execLine(args);
+    for(int i=0; args[i] != NULL; i++){
+      free(args[i]);
+    }
     free(args);
   }
   return 0;

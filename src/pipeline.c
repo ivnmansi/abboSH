@@ -85,6 +85,8 @@ void execFork(char** args){
 
 void execLine(char** args){
   if(!execBuiltIn(args)){
-    execFork(args);
+    if(!execPipes(args)){
+      execFork(args);
+    }
   }
 }
