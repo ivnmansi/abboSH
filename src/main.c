@@ -1,9 +1,10 @@
 #include "pipeline.h"
  
 int main(){
-  
   char** args;
   char* prompt;
+
+  execFile(".ash");
 
   while(1){
     prompt = getPrompt();
@@ -11,10 +12,7 @@ int main(){
     free(prompt);
     args = readLine();
     execLine(args);
-    for(int i=0; args[i] != NULL; i++){
-      free(args[i]);
-    }
-    free(args);
+    freeArgs(args);
   }
   return 0;
 }

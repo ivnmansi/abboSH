@@ -38,3 +38,10 @@ void removeArg(char** args, int position){
   }
   args[i] = NULL;
 }
+
+void freeArgs(char** args){
+  for(int i=0;args[i]!=NULL;i++){
+    free(args[i]);
+  }
+  free(args);
+}

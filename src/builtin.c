@@ -1,5 +1,40 @@
 #include "builtin.h"
 
+/**
+ * @brief Reads the config file and execs its lines
+ * @param config_file Directory of the file to execs its lines
+ */
+void execFile(char* config_file){
+  FILE* fp = fopen(config_file, "r");
+  if(fp == NULL){
+    return;
+  }
+  
+  char* line = NULL;
+  size_t len = 0;
+  ssize_t read;
+
+  while((read = getline(&line,&len,fp))!=-1){
+    formatBuffer(line, read);
+    if(read<=1 || line[0] == '#'){
+      continue;
+    }
+
+    char** args = splitBuffer(line);
+    if(args[0] != NULL){
+      execLine(args);
+    }
+
+    free(args);
+  }
+  free(line);
+  fclose(fp);
+}
+
+/**
+  * @brief Changes the current working directory
+  * @param args Path of the destiny directory
+*/
 int changeDirectory(char** args){
   char* desDirectory;
   if(args[1] == NULL){
@@ -16,8 +51,11 @@ int changeDirectory(char** args){
   return 1;
 }
 
+/**
+  * 
+*/
 int exitShell(char** args){
-  free(args);
+  freeArgs(args);
   printf("Bye bye!\n");
   exit(0);
 }

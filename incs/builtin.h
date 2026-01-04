@@ -9,11 +9,12 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "utils.h"
+#include "pipeline.h"
 
 int changeDirectory(char** args);
 int exitShell(char** args);
 int printHelp();
-int printWelcome(char** args);
+void execFile(char* config_file);
 
 void reOut(char** args);
 void reIn(char** args);
