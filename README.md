@@ -74,7 +74,7 @@ Bye bye!
 ## To do
 
 - Add support for:
-	- Pipes (`cmd1 | cmd2`)
+	- More than 2 pipes
 	- Background jobs (`cmd &`)
 	- Basic command history
 - Improve error handling and messages
