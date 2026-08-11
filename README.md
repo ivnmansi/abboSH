@@ -1,5 +1,7 @@
 # abboShell
 
+![](docs/image.png)
+
 A small UNIX-like shell written in C, built as a learning project to explore process management, system calls, and basic shell features.
 
 ---
