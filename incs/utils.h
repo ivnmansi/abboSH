@@ -10,4 +10,7 @@ char** splitBuffer(char* buffer);
 void removeArg(char** args, int position);
 void freeArgs(char** args);
 
+int isBackgroundJob(char** args);
+int backgroundJobIndex(char** args);
+
 #endif

@@ -1,4 +1,4 @@
-# abboSH
+# abboShell
 
 A small UNIX-like shell written in C, built as a learning project to explore process management, system calls, and basic shell features.
 
@@ -13,6 +13,7 @@ A small UNIX-like shell written in C, built as a learning project to explore pro
 - **Command execution**:
 	- Uses `fork` + `execvp` to run external programs.
 	- Prints process exit status or terminating signal.
+	- Allows background execution with `&`. Handles zombie processes.
 - **Redirection**:
 	- Output redirection: `>` (truncate) and `>>` (append).
 	- Input redirection: `<` from file.
@@ -75,7 +76,6 @@ Bye bye!
 
 - Add support for:
 	- More than 2 pipes
-	- Background jobs (`cmd &`)
 	- Basic command history
 - Improve error handling and messages
 - Implement signal handling

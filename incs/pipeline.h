@@ -10,12 +10,13 @@
 #include <string.h>
 #include "utils.h"
 #include "builtin.h"
+#include "jobs.h"
 #include "colors.h"
 
-char* getPrompt();
-char** readLine();
+char* getPrompt(void);
+char** readLine(void);
 int execBuiltIn(char** args);
-void execFork(char** args);
-void execLine(char** args);
+void execFork(char** args, int isBackground, JobList* jobList);
+void execLine(char** args, JobList* jobList);
 
 #endif

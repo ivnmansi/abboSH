@@ -45,3 +45,21 @@ void freeArgs(char** args){
   }
   free(args);
 }
+
+/**
+ * @brief Indicatees if the command should be executed in background. Removes the "&" from the args if it is present
+ * 
+ * @param args 
+ * @return int 
+ */
+int isBackgroundJob(char** args){
+  int i = 0;
+  while(args[i] != NULL){
+    if(strcmp(args[i], "&") == 0){
+      removeArg(args, i);
+      return 1;
+    }
+    i++;
+  }
+  return 0;
+}

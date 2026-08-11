@@ -1,5 +1,5 @@
 CC=gcc
-EXEC=abboSH
+EXEC=abboShell
 
 SRC_DIR=src
 OBJ_DIR=obj

@@ -9,16 +9,16 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "utils.h"
-#include "pipeline.h"
+#include "jobs.h"
 
 int changeDirectory(char** args);
 int exitShell(char** args);
-int printHelp();
-void execFile(char* config_file);
+int printHelp(void);
+void execFile(char* config_file, JobList* jobList);
 
 void reOut(char** args);
 void reIn(char** args);
 
-int execPipes(char** args);
+int execPipes(char** args, int isBackground, JobList* jobList);
 #endif
 

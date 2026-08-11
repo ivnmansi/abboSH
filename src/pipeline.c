@@ -1,7 +1,6 @@
-#define _GNU_SOURCE
 #include "pipeline.h"
 
-char* getPrompt(){
+char* getPrompt(void){
   char* working_directory = getcwd(NULL, 0);
   char host[HOST_NAME_MAX + 1];
   char* user = getenv("USER");
@@ -15,7 +14,7 @@ char* getPrompt(){
   return prompt;
 }
 
-char** readLine(){
+char** readLine(void){
   char* buffer = NULL;
   size_t buffer_size = 0;
   ssize_t buffer_len; 
@@ -57,7 +56,7 @@ int execBuiltIn(char** args){
   return 0;
 }
 
-void execFork(char** args){
+void execFork(char** args, int isBackground, JobList* jobList){
   pid_t pid = fork();
 
   if(pid == 0){
@@ -70,23 +69,32 @@ void execFork(char** args){
   }
   else if(pid > 0){
     int status;
-    waitpid(pid, &status, 0);
+    
+    if(isBackground){
+      addJob(jobList, pid, args[0]);
+      printf(BLUE"[Process running in background with PID %d]\n", pid);
+      return;
+    }
+    else {
+      waitpid(pid, &status, 0);
+    }
 
     if(WIFEXITED(status)){
       int exit_code = WEXITSTATUS(status);
-      printf("[Process returned %d]\n",exit_code);
+      printf(BLUE"[Process returned %d]\n",exit_code);
     }
     else if(WIFSIGNALED(status)){
       int signal_num = WTERMSIG(status);
-      printf("[Terminated by signal %d]\n", signal_num);
+      printf(BLUE"[Terminated by signal %d]\n", signal_num);
     }
   }
 }
 
-void execLine(char** args){
+void execLine(char** args, JobList* jobList){
+  int isBackground = isBackgroundJob(args);
   if(!execBuiltIn(args)){
-    if(!execPipes(args)){
-      execFork(args);
+    if(!execPipes(args, isBackground, jobList)){
+      execFork(args, isBackground, jobList);
     }
   }
 }

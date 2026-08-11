@@ -1,10 +1,12 @@
 #include "builtin.h"
+#include "jobs.h"
+#include "pipeline.h"
 
 /**
  * @brief Reads the config file and execs its lines
  * @param config_file Directory of the file to execs its lines
  */
-void execFile(char* config_file){
+void execFile(char* config_file, JobList* jobList){
   FILE* fp = fopen(config_file, "r");
   if(fp == NULL){
     return;
@@ -22,7 +24,7 @@ void execFile(char* config_file){
 
     char** args = splitBuffer(line);
     if(args[0] != NULL){
-      execLine(args);
+      execLine(args, jobList);
     }
 
     free(args);
@@ -155,7 +157,7 @@ void reIn(char** args){
 }
 
 
-int execPipes(char** args){
+int execPipes(char** args, int isBackground, JobList* jobList){
   int i = 0;
   while(args[i] != NULL){
     if((strcmp(args[i], "|") == 0) && args[i-1] != NULL && args[i+1] != NULL){
@@ -193,8 +195,15 @@ int execPipes(char** args){
       close(fd[0]);
       close(fd[1]);
 
-      waitpid(pid1, NULL, 0);
-      waitpid(pid2, NULL, 0);
+      if(!isBackground){
+        waitpid(pid1, NULL, 0);
+        waitpid(pid2, NULL, 0);
+      }
+      else {
+        addJob(jobList, pid1, args[0]);
+        addJob(jobList, pid2, argsRight[0]);
+        printf(BLUE"[Process running in background with PIDs %d and %d]\n", pid1, pid2);
+      }
 
       return 1;
     }
