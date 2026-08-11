@@ -62,6 +62,9 @@ void execFork(char** args, int isBackground, JobList* jobList){
   if(pid == 0){
     reIn(args);
     reOut(args);
+
+    setpgid(0, 0);
+
     execvp(args[0], args);
 
     printf("Command not found\n");
@@ -69,9 +72,11 @@ void execFork(char** args, int isBackground, JobList* jobList){
   }
   else if(pid > 0){
     int status;
+
+    setpgid(pid, pid);
     
     if(isBackground){
-      addJob(jobList, pid, args[0]);
+      addJob(jobList, pid, args[0], 1);
       printf(BLUE"[Process running in background with PID %d]\n", pid);
       return;
     }

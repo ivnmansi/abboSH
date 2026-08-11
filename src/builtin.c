@@ -176,9 +176,16 @@ int execPipes(char** args, int isBackground, JobList* jobList){
         dup2(fd[1], STDOUT_FILENO);
         close(fd[1]);
 
+        setpgid(0, 0);
+
         execvp(args[0], args);
         printf("ERROR: Could not exec left pipe");
         exit(EXIT_FAILURE);
+      }
+
+      if(setpgid(pid1, pid1) == -1){
+        printf(RED"ERROR: Could not set process group for left pipe");
+        return 0;
       }
 
       pid_t pid2 = fork();
@@ -187,9 +194,16 @@ int execPipes(char** args, int isBackground, JobList* jobList){
         dup2(fd[0], STDIN_FILENO);
         close(fd[0]);
 
+        setpgid(0, pid1);
+
         execvp(argsRight[0], argsRight);
         printf("ERROR: Could not exec right pipe");
         exit(EXIT_FAILURE);
+      }
+
+      if(setpgid(pid2, pid1) == -1){
+        printf(RED"ERROR: Could not set process group for right pipe");
+        return 0;
       }
 
       close(fd[0]);
@@ -200,8 +214,7 @@ int execPipes(char** args, int isBackground, JobList* jobList){
         waitpid(pid2, NULL, 0);
       }
       else {
-        addJob(jobList, pid1, args[0]);
-        addJob(jobList, pid2, argsRight[0]);
+        addJob(jobList, pid1, args[0], 2);
         printf(BLUE"[Process running in background with PIDs %d and %d]\n", pid1, pid2);
       }
 

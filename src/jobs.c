@@ -23,7 +23,7 @@ int freeJobList(JobList* jobList){
     return 0;
 }
 
-int addJob(JobList* jobList, pid_t pid, const char* command){
+int addJob(JobList* jobList, pid_t pid, const char* command, int remaining){
     Job* newJob = (Job*)malloc(sizeof(Job));
     if(newJob == NULL){
         return -1; // Memory allocation failed
@@ -34,6 +34,7 @@ int addJob(JobList* jobList, pid_t pid, const char* command){
     newJob->running = 1;
     newJob->exit_code = -1;
     newJob->next = NULL;
+    newJob->remaining = remaining;
 
     Job* current = jobList->head;
     if(current == NULL){
@@ -102,6 +103,7 @@ int reapChildrenPoll(JobList* jobList){
 
         if(job != NULL){
             printf(BLUE"[Process with PID %d finished with exit code %d]\n", pid, exit_code);
+            job->remaining--;
             job->running = 0;
             job->exit_code = exit_code;
         }

@@ -14,6 +14,7 @@ typedef struct Job {
     int running;
     int exit_code;
     struct Job* next;
+    int remaining;
 } Job;
 
 typedef struct JobList {
@@ -23,7 +24,7 @@ typedef struct JobList {
 
 JobList* initJobList(JobList* jobList);
 
-int addJob(JobList* jobList, pid_t pid, const char* command);
+int addJob(JobList* jobList, pid_t pid, const char* command, int remaining);
 
 int removeJob(JobList* jobList, pid_t pid);
 
