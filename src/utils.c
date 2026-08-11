@@ -26,6 +26,11 @@ char** splitBuffer(char* buffer){
 
     token = strtok(NULL, " \t\r\n\a");
   }
+  if(splitedBuffer == NULL){
+    splitedBuffer = malloc(sizeof(char*));
+    splitedBuffer[0] = NULL;
+  }
+
   return splitedBuffer;
 }
 
@@ -40,7 +45,10 @@ void removeArg(char** args, int position){
 }
 
 void freeArgs(char** args){
-  for(int i=0;args[i]!=NULL;i++){
+  if(args == NULL){
+    return;
+  }
+  for(int i=0; args[i] != NULL; i++){
     free(args[i]);
   }
   free(args);

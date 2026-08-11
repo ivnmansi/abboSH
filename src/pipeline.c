@@ -57,6 +57,11 @@ int execBuiltIn(char** args){
 }
 
 void execFork(char** args, int isBackground, JobList* jobList){
+
+  if(args[0] == NULL){
+    return;
+  }
+
   pid_t pid = fork();
 
   if(pid == 0){
@@ -96,10 +101,14 @@ void execFork(char** args, int isBackground, JobList* jobList){
 }
 
 void execLine(char** args, JobList* jobList){
-  int isBackground = isBackgroundJob(args);
-  if(!execBuiltIn(args)){
-    if(!execPipes(args, isBackground, jobList)){
-      execFork(args, isBackground, jobList);
+    if(args == NULL || args[0] == NULL){
+      return;
     }
-  }
+
+    int isBackground = isBackgroundJob(args);
+    if(!execBuiltIn(args)){
+      if(!execPipes(args, isBackground, jobList)){
+        execFork(args, isBackground, jobList);
+      }
+    }
 }
